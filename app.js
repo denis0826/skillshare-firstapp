@@ -7,8 +7,8 @@ function displayTable(date, symbol, ask, bid, arb) {
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   //22 Jan 2018 14:01
   console.log(`
-    Date/Time Stamp       Symbol   ASK   BID  	ARB(%)
-    ${newdate.getDate()} ${months[newdate.getMonth()]} ${newdate.getFullYear()} ${newdate.getHours()}:${newdate.getMinutes()}  ${symbol} ${parseFloat(ask).toFixed(2)} ${parseFloat(bid).toFixed(2)} ${arb}
+    Date/Time Stamp \t\tSymbol\tASK\tBID\tARB(%)
+    ${newdate.getDate()} ${months[newdate.getMonth()]} ${newdate.getFullYear()} ${newdate.getHours()}:${newdate.getMinutes()}\t${symbol}\t${parseFloat(ask).toFixed(2)}\t${parseFloat(bid).toFixed(2)}\t${arb}
     `);
 }
 
@@ -16,12 +16,6 @@ function displayARB(askPrice, bidPrice) {
   return 100 * (askPrice - bidPrice) / bidPrice;
 }
 
-function displayDepth(type, price, qty) {
-  console.log(`
-    TYPE	    PRICE    QTY
-    ${type} ${price} ${qty}
-    `);
-} 
 
 const api2 = 'https://api.binance.com/api/v1/ticker/24hr';
 https.get(api2, function(res) {
@@ -66,7 +60,7 @@ https.get(`${api3}?symbol=${apiSymbol}&limit=${apilimit}`, function(res) {
 
     let temp = [];
 
-    console.log(`TYPE	    PRICE    QTY`);
+    console.log(`TYPE\tPRICE\t\tQTY`);
 
     const array1 = arr2.asks,
     array2 = arr2.bids;
@@ -91,11 +85,11 @@ https.get(`${api3}?symbol=${apiSymbol}&limit=${apilimit}`, function(res) {
     // console.log(sortByValue(array2))
 
     arrDepth1.forEach(element => {
-      console.log(`ASK   ${element[0]} ${element[1]}`);
+      console.log(`ASK\t${element[0]}\t${element[1]}`);
     });
     
     arrDepth2.forEach(element => {
-      console.log(`BID   ${element[0]} ${element[1]}`);
+      console.log(`BID\t${element[0]}\t${element[1]}`);
     });
 
 
