@@ -13,7 +13,7 @@ function displayTable(date, symbol, ask, bid, arb) {
 }
 
 function displayARB(askPrice, bidPrice) {
-  return (askPrice - bidPrice) / bidPrice;
+  return 100 * (askPrice - bidPrice) / bidPrice;
 }
 
 function displayDepth(type, price, qty) {
@@ -38,7 +38,7 @@ https.get(api2, function(res) {
     const ticker = arr.filter((val) => {
       if(val.symbol === 'ADXBNB'){
         const arb = displayARB(val.askPrice, val.bidPrice);
-        displayTable(val.openTime, val.symbol, val.askQty, val.bidQty, arb);
+        displayTable(val.openTime, val.symbol, val.askPrice, val.bidPrice, arb);
         return true;
       }
     });
@@ -54,6 +54,7 @@ const apiSymbol = 'ADXBNB';
 const apilimit = 5;
 
 https.get(`${api3}?symbol=${apiSymbol}&limit=${apilimit}`, function(res) {
+
   let data = '';
   res.on('data', (chunk) => {
     data += chunk;
@@ -61,19 +62,41 @@ https.get(`${api3}?symbol=${apiSymbol}&limit=${apilimit}`, function(res) {
 
   res.on('end', () => {
     // API 3
-    const arr = JSON.parse(data);
+    const arr2 = JSON.parse(data);
+
+    let temp = [];
 
     console.log(`TYPE	    PRICE    QTY`);
 
-    const asksDepth = arr.asks.forEach(element => {
-      console.log(`ASK ${element[0]} ${element[1]}`);
-    });
-    const bidsDepth = arr.bids.forEach(element => {
-      console.log(`BID ${element[0]} ${element[1]}`);
-    });
+    const array1 = arr2.asks,
+    array2 = arr2.bids;
 
-    //TO DO 
-    //PUSH THE ARRAY INTO temp so I can sort
+  
+    
+    arrDepth1 = array1.sort().reverse();
+    arrDepth2 = array2.sort().reverse();
+
+    
+
+    // function sortByValue(jsObj){
+    //   var sortedArray = [];
+    //     for(var i in jsObj){
+    //       // Push each JSON Object entry in array by [value, key]
+    //       sortedArray.push([jsObj[i], i]);
+    //     }
+    //     return sortedArray.sort().reverse();
+    //   }
+
+    // console.log(sortByValue(array1))
+    // console.log(sortByValue(array2))
+
+    arrDepth1.forEach(element => {
+      console.log(`ASK   ${element[0]} ${element[1]}`);
+    });
+    
+    arrDepth2.forEach(element => {
+      console.log(`BID   ${element[0]} ${element[1]}`);
+    });
 
 
   });
